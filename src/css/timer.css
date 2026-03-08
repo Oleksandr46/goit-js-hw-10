@@ -1,17 +1,35 @@
-.container-gallery {
-  display: flex;
-  max-width: 1128px;
-  margin: 0 auto;
-}
-.gallery {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 24px;
+.input {
+  width: 300px;
+  height: 50px;
+  border-radius: 2%;
+  border: 1px solid blue;
 }
 
-.gallery-image {
-  display: block;
-  width: 360px;
-  height: 200px;
+.btn-start {
+  width: 100px;
+  height: 55px;
+  border: 1px solid blue;
+  background-color: rgb(116, 104, 187);
+  border-radius: 8%;
+}
+.timer {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+}
+.field {
+  display: flex;
+  flex-direction: column;
+}
+.value {
+  font-weight: 600;
+  font-size: 88px;
+  line-height: 1.33;
+  letter-spacing: 0.03em;
+}
+.label {
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 1.33;
+  letter-spacing: 0.03em;
 }
