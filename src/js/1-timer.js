@@ -1,12 +1,14 @@
-// Описаний в документації
 import flatpickr from 'flatpickr';
-// Додатковий імпорт стилів
-import 'flatpickr/dist/flatpickr.min.css';
-
-// Описаний у документації
 import iziToast from 'izitoast';
-// Додатковий імпорт стилів
-import 'izitoast/dist/css/iziToast.min.css';
+
+const refs = {
+  startBtn: document.querySelector('[data-start]'),
+  dataInput: document.querySelector('#datetime-picker'),
+};
+
+refs.startBtn.disabled = true;
+
+let userSelectedDate = null;
 
 const options = {
   enableTime: true,
@@ -14,9 +16,26 @@ const options = {
   defaultDate: new Date(),
   minuteIncrement: 1,
   onClose(selectedDates) {
-    console.log(selectedDates[0]);
+    userSelectedDate = selectedDates[0];
+    if (userSelectedDate < new Date()) {
+      iziToast.error({
+        // title: 'Error',
+        message: 'Please choose a date in the future',
+      });
+      refs.startBtn.disabled = true;
+      return;
+    }
+    refs.startBtn.disabled = false;
   },
 };
+flatpickr(refs.dataInput, options);
+
+refs.startBtn.addEventListener('click', () => {
+  console.log(userSelectedDate.getTime());
+});
+function addLeadingZero(value) {
+  return String(value).padStart(2, '0');
+}
 function convertMs(ms) {
   // Number of milliseconds per unit of time
   const second = 1000;
