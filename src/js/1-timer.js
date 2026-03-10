@@ -4,6 +4,10 @@ import iziToast from 'izitoast';
 const refs = {
   startBtn: document.querySelector('[data-start]'),
   dataInput: document.querySelector('#datetime-picker'),
+  dataDays: document.querySelector('[data-days]'),
+  dataHours: document.querySelector('[data-hours]'),
+  dataMinutes: document.querySelector('[data-minutes]'),
+  dataSeconds: document.querySelector('[data-seconds]'),
 };
 
 refs.startBtn.disabled = true;
@@ -31,7 +35,24 @@ const options = {
 flatpickr(refs.dataInput, options);
 
 refs.startBtn.addEventListener('click', () => {
-  console.log(userSelectedDate.getTime());
+  refs.startBtn.disabled = true;
+  refs.dataInput.disabled = true;
+  const intervalId = setInterval(() => {
+    const difference = userSelectedDate.getTime() - Date.now();
+
+    refs.dataSeconds.textContent = addLeadingZero(
+      convertMs(difference).seconds
+    );
+    refs.dataMinutes.textContent = addLeadingZero(
+      convertMs(difference).minutes
+    );
+    refs.dataHours.textContent = addLeadingZero(convertMs(difference).hours);
+    refs.dataDays.textContent = addLeadingZero(convertMs(difference).days);
+    if (difference < 1000) {
+      clearInterval(intervalId);
+      refs.dataInput.disabled = false;
+    }
+  }, 1000);
 });
 function addLeadingZero(value) {
   return String(value).padStart(2, '0');
