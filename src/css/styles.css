@@ -5,8 +5,6 @@
   |============================
 */
 /* Common styles */
-@import url('flatpickr/dist/flatpickr.min.css');
-@import url('izitoast/dist/css/iziToast.min.css');
 
 @import url('./reset.css');
 @import url('./base.css');
