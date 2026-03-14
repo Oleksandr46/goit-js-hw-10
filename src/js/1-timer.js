@@ -23,7 +23,8 @@ const options = {
   minuteIncrement: 1,
   onClose(selectedDates) {
     userSelectedDate = selectedDates[0];
-    if (userSelectedDate < new Date()) {
+
+    if (userSelectedDate <= new Date()) {
       iziToast.error({
         message: 'Please choose a date in the future',
       });
@@ -40,19 +41,23 @@ refs.startBtn.addEventListener('click', () => {
   refs.dataInput.disabled = true;
   const intervalId = setInterval(() => {
     const difference = userSelectedDate.getTime() - Date.now();
-    const { seconds, minutes, hours, days } = convertMs(difference);
 
-    refs.dataSeconds.textContent = addLeadingZero(seconds);
-    refs.dataMinutes.textContent = addLeadingZero(minutes);
-    refs.dataHours.textContent = addLeadingZero(hours);
-    refs.dataDays.textContent = addLeadingZero(days);
-
-    if (difference < 1000) {
+    if (difference <= 0) {
       clearInterval(intervalId);
+      updateTimer({ seconds: 0, minutes: 0, hours: 0, days: 0 });
       refs.dataInput.disabled = false;
+      return;
     }
+    const time = convertMs(difference);
+    updateTimer(time);
   }, 1000);
 });
+function updateTimer({ seconds, minutes, hours, days }) {
+  refs.dataSeconds.textContent = addLeadingZero(seconds);
+  refs.dataMinutes.textContent = addLeadingZero(minutes);
+  refs.dataHours.textContent = addLeadingZero(hours);
+  refs.dataDays.textContent = addLeadingZero(days);
+}
 function addLeadingZero(value) {
   return String(value).padStart(2, '0');
 }
