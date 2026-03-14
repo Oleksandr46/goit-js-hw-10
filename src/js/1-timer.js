@@ -15,6 +15,7 @@ refs.startBtn.disabled = true;
 let userSelectedDate = null;
 
 const options = {
+  dateFormat: 'Y-m-d H:i',
   enableTime: true,
   time_24hr: true,
   defaultDate: new Date(),
@@ -23,7 +24,6 @@ const options = {
     userSelectedDate = selectedDates[0];
     if (userSelectedDate < new Date()) {
       iziToast.error({
-        // title: 'Error',
         message: 'Please choose a date in the future',
       });
       refs.startBtn.disabled = true;
@@ -39,15 +39,13 @@ refs.startBtn.addEventListener('click', () => {
   refs.dataInput.disabled = true;
   const intervalId = setInterval(() => {
     const difference = userSelectedDate.getTime() - Date.now();
+    const { seconds, minutes, hours, days } = convertMs(difference);
 
-    refs.dataSeconds.textContent = addLeadingZero(
-      convertMs(difference).seconds
-    );
-    refs.dataMinutes.textContent = addLeadingZero(
-      convertMs(difference).minutes
-    );
-    refs.dataHours.textContent = addLeadingZero(convertMs(difference).hours);
-    refs.dataDays.textContent = addLeadingZero(convertMs(difference).days);
+    refs.dataSeconds.textContent = addLeadingZero(seconds);
+    refs.dataMinutes.textContent = addLeadingZero(minutes);
+    refs.dataHours.textContent = addLeadingZero(hours);
+    refs.dataDays.textContent = addLeadingZero(days);
+
     if (difference < 1000) {
       clearInterval(intervalId);
       refs.dataInput.disabled = false;
@@ -57,6 +55,7 @@ refs.startBtn.addEventListener('click', () => {
 function addLeadingZero(value) {
   return String(value).padStart(2, '0');
 }
+
 function convertMs(ms) {
   // Number of milliseconds per unit of time
   const second = 1000;
